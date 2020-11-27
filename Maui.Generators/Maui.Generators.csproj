@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>preview</LangVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <IncludeBuildOutput>False</IncludeBuildOutput>
+
+        <PackageId>Maui.Generators</PackageId>
+        <Title>Maui Source code generators</Title>
+        <Version>0.1.0</Version>
+        <summary>Source code generators for Maui: Fonts, etc</summary>
+        <Copyright>Copyright © Redth</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageOutputPath>..\output</PackageOutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <Content Include="Maui.Generators.targets" Pack="True" PackagePath="build\" />
+        <Content Include="Maui.Generators.targets" Pack="True" PackagePath="buildTransitive\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.8.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.1" PrivateAssets="all" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemGroup>
+    <AvailableItemName Include="SharedFont" />
+  </ItemGroup>
+
+  <ItemGroup>
+      <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="SourceItemGroup" Visible="false" />
+      <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="FontAlias" Visible="false" />
+  </ItemGroup>
+
+  <Target Name="_MauiSrcGenEmbedFonts" AfterTargets="ResolveReferences">
+      <ItemGroup>
+          <EmbeddedResource Include="@(SharedFont)" TargetPath="%(Filename)" />
+      </ItemGroup>
+  </Target>
+
+  <Target Name="_MauiSrcGenInjectSharedFonts" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun">
+    <ItemGroup>
+      <AdditionalFiles Include="@(SharedFont)" FontAlias="%(SharedFont.Alias)" SourceItemGroup="SharedFont" />
+    </ItemGroup>
+  </Target>
+
+</Project>
