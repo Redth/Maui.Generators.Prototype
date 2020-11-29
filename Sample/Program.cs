@@ -9,7 +9,8 @@ namespace MauiSourceGenerators
     {
         static void Main(string[] args)
         {
-            RegisterRegistrarInAssemblies();
+            // Not needed with module initializer in generated code
+            // RegisterRegistrarInAssemblies();
 
             var font = GetFont("OpenSans-Regular.ttf");
 
@@ -18,6 +19,8 @@ namespace MauiSourceGenerators
             Console.ReadLine();
         }
 
+        // Just some code to peek into the internal fonts and test if the registration actually happened
+        // You wouln't actually have this code in your app
         static (global::Xamarin.Forms.ExportFontAttribute attribute, global::System.Reflection.Assembly assembly) GetFont(string name)
         {
             var fontRegistrarType = typeof(global::Xamarin.Forms.Internals.FontRegistrar);
@@ -28,20 +31,21 @@ namespace MauiSourceGenerators
             return embeddedFonts[name];
         }
 
-        static void RegisterRegistrarInAssemblies()
-        {
-            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                // Skip System
-                if (asm.FullName.StartsWith("System.", StringComparison.OrdinalIgnoreCase))
-                    continue;
+        // Not needed with module initializer in generated code
+        // static void RegisterRegistrarInAssemblies()
+        // {
+        //     foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+        //     {
+        //         // Skip System
+        //         if (asm.FullName.StartsWith("System.", StringComparison.OrdinalIgnoreCase))
+        //             continue;
 
-                var t = asm.GetType("Maui.Generated.MauiGeneratedRegistrar");
+        //         var t = asm.GetType("Maui.Generated.MauiGeneratedRegistrar");
 
-                var m = t?.GetMethod("Register");
+        //         var m = t?.GetMethod("Register");
 
-                m?.Invoke(null, null);
-            }
-        }
+        //         m?.Invoke(null, null);
+        //     }
+        // }
     }
 }

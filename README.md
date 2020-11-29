@@ -27,9 +27,10 @@ using Xamarin.Forms.Internals;
 namespace Maui.Generated
 {
   [GeneratedCode("Maui.Generators", "1.0.0.0")]
-  public class MauiGeneratedRegistrar
+  internal class MauiGeneratedRegistrar
   {
-    public static void Register()
+    [ModuleInitializer]
+    internal static void Register()
     {
       FontRegistrar.Register(new ExportFontAttribute("OpenSans-Regular.ttf")
       {
@@ -40,9 +41,14 @@ namespace Maui.Generated
 }
 ```
 
-The expectation is that then Maui will attempt to find and invoke the `Maui.Generated.MauiGeneratedRegistrar` types in referenced assemblies and invoke the `Register()` method on them at runtime, causing the registrations to occur.
 
-It would be ideal if we had a module initializer (this was proposed for C# 9 but hasn't been included yet) to automatically invoke this code, however a quick type lookup on each assembly is still faster than scanning for all assembly attributes in every assembly.  Plus, no attributes need to be specified by the developer.
+Using the `[ModuleInitializer]` attribute on the generated `Register()`  method will cause it to be invoked automatically at runtime.  This should almost always work, however it should be noted that the module initializer marked methods are only guaranteed to run before any other code is invoked from its assembly.
+
+If an assembly is doing some sort of handler registration, it most likely is doing the registration for implementations or resources it contains, therefore the module initializer will always be called before the implementations are used anyway.
+
+If an assembly contains things that don't need to be referenced by code (ie: just some fonts and no actual code), it would need to use some sort of `Init()` call to avoid being linked out.  I haven't thought of any great scenario which causes module initializers to be a problem yet.
+
+We need to consider more scenarios where the module initializer could be problematic for each use case of generated code.
 
 Finally, if we have `<SharedFont ` type items as the entry point, we can add some globbing pattern rules to the single project targets by default so fonts could be included simply by convention, for example:
 
