@@ -27,9 +27,10 @@ namespace Maui.Generators
 namespace Maui.Generated
 {
     [global::System.CodeDom.Compiler.GeneratedCode(""Maui.Generators"", ""1.0.0.0"")]
-    public static class MauiGeneratedRegistrar
+    internal static class MauiGeneratedRegistrar
     {
-        public static void Register()
+        [global::System.Runtime.CompilerServices.ModuleInitializer]
+        internal static void Register()
         {
 ");
             foreach (var g in mauiRegistrarGenerators)
